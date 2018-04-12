@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tucker.calcexam.R;
@@ -30,10 +31,11 @@ public class MainActivity extends AppCompatActivity {
     private String valor1 = "";
     private String valor2 = "";
     private String valorRes = "";
-    private Boolean isFirst = true;
+    private boolean isFirst = true;
+    private boolean noPoint = true;
     private String op;
     public double num1, num2, numRes;
-    private RecyclerView lista;
+    private RecyclerView listaH;
     private static Context QuickContext;
 
 
@@ -52,6 +54,13 @@ public class MainActivity extends AppCompatActivity {
         en_pantalla = "";
         mostrar(en_pantalla);
         isFirst = true;
+        noPoint = true;
+    }
+
+    public void clean()
+    {
+        valor1 = "";
+        valor2 = "";
     }
 
     public void recivirValor(String Valor_1, String Valor_2)
@@ -64,14 +73,22 @@ public class MainActivity extends AppCompatActivity {
     }
     
 
-    public void MathError()
+    public void MathError(String error)
     {
-        //Este metodo le indica al programa que hacer si se presenta un error de calculo
-        Toast.makeText(getApplicationContext(), "Error de calculo, No es posible completar la operacion", Toast.LENGTH_LONG).show();
-        valor2.isEmpty();
-        recivirOperacion("div");
-        isFirst = false;
-        mostrar(valor1 + " ÷ ");
+        if (error.contentEquals("divError"))
+        {
+            //Este metodo le indica al programa que hacer si se presenta un error de calculo
+            Toast.makeText(getApplicationContext(), "Error de calculo, No es posible completar la operacion", Toast.LENGTH_LONG).show();
+            valor2.isEmpty();
+            recivirOperacion("div");
+            isFirst = false;
+            mostrar(valor1 + " ÷ ");
+        }
+        else if(error.contentEquals("pointError"))
+        {
+            //Este metodo le indica al programa que hacer si se presenta un error de calculo
+            Toast.makeText(getApplicationContext(), "Error de calculo, No es colocar mas de un punto", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void recivirOperacion(String operacion)
@@ -91,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         if (op.contentEquals("+")){numRes = num1 + num2;}
         else if (op.contentEquals("-")){numRes = num1 - num2;}
         else if (op.contentEquals("*")){numRes = num1 * num2;}
-        else if (op.contentEquals("/")){if(num2 != 0){numRes = num1/num2;}else {MathError();}}
+        else if (op.contentEquals("/")){if(num2 != 0){numRes = num1/num2;}else {MathError("divError");}}
         else if (op.contentEquals("^")){numRes = Math.pow(num1,num2);}
         else numRes = num1;
 
@@ -105,39 +122,33 @@ public class MainActivity extends AppCompatActivity {
         /*Metodo Ads evalua si ya se hiso una operacion y en caso de que
         se alla efectuado dicha operacion envia el resultado al valor 1
         limpia valor 2, y prepara para la sigiente operacion*/
-        if((valor2 != null && isFirst == false) || numRes == Double.NaN)
+        if((valor2 != "" && isFirst == false) || numRes == Double.NaN)
         {
-            clear();
-            recivirValor(valor1, valor2);
-            Operar();
-            valor1 = Double.toString(numRes);
-            mostrar(valor1);
-            valor2 = "";
-            recivirOperacion(LastOp);
-            isFirst = false;
+
         }
     }
-    //Todo save
 
+    //Todo save
     private void save()
     {
         Historial resgistro = new Historial();
         resgistro.operationHistory = valorRes;
         resgistro.save();
-        finish();
     }
 
-
-
+    private void onUpdate ()
+    {
+        List<Historial> info = SQLite.select().from(Historial.class).queryList();
+        listaH.setAdapter(new ToDoAdapter(info));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        QuickContext = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
 
         //Declaracion del teclado numerico
         Button cero = findViewById(R.id.btn0);
@@ -151,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
         Button siete = findViewById(R.id.btn7);
         Button ocho = findViewById(R.id.btn8);
         Button nueve = findViewById(R.id.btn9);
+        Button point = findViewById(R.id.btnPoint);
         clear();
 
         cero.setOnClickListener(new View.OnClickListener() {
@@ -285,6 +297,24 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        point.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(noPoint) {
+                    en_pantalla = en_pantalla + ".";
+                    mostrar(en_pantalla);
+                    if (isFirst)
+                    {
+                        valor1 = valor1 + ".";
+                    } else {
+                        valor2 = valor2 + ".";
+                    }
+                    noPoint = false;
+                } else {
+                    MathError("pointError");
+                }
+            }
+        });
 
         //Declaracion de los Operadores y controles
         Button add = findViewById(R.id.btnAdd);
@@ -294,7 +324,6 @@ public class MainActivity extends AppCompatActivity {
         Button power_of = findViewById(R.id.btnPow);
         Button is_equal = findViewById(R.id.btnRes);
         Button deleate = findViewById(R.id.btnDelete);
-        Button backspece = findViewById(R.id.btnBackspece);
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -302,6 +331,7 @@ public class MainActivity extends AppCompatActivity {
                 //Ans("sum");
                 recivirOperacion("sum");
                 isFirst = false;
+                noPoint = true;
                 en_pantalla = en_pantalla + " + ";
                 mostrar(en_pantalla);
 
@@ -313,6 +343,7 @@ public class MainActivity extends AppCompatActivity {
                 //Ans("res");
                 recivirOperacion("res");
                 isFirst = false;
+                noPoint = true;
                 en_pantalla = en_pantalla + " - ";
                 mostrar(en_pantalla);
             }
@@ -323,6 +354,7 @@ public class MainActivity extends AppCompatActivity {
                 //Ans("mul");
                 recivirOperacion("mul");
                 isFirst = false;
+                noPoint = true;
                 en_pantalla = en_pantalla + " × ";
                 mostrar(en_pantalla);
             }
@@ -333,6 +365,7 @@ public class MainActivity extends AppCompatActivity {
                 //Ans("div");
                 recivirOperacion("div");
                 isFirst = false;
+                noPoint = true;
                 en_pantalla = en_pantalla + " ÷ ";
                 mostrar(en_pantalla);
             }
@@ -343,7 +376,8 @@ public class MainActivity extends AppCompatActivity {
                 //Ans("pow");
                 recivirOperacion("pow");
                 isFirst = false;
-                en_pantalla = en_pantalla + " ÷ ";
+                noPoint = true;
+                en_pantalla = en_pantalla + " ^ ";
                 mostrar(en_pantalla);
             }
         });
@@ -351,23 +385,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 clear();
-                valor1 = "";
-                valor2 = "";
+                clean();
                 num1 = Double.NaN;
                 num2 = Double.NaN;
                 numRes = Double.NaN;
             }
         });
-        backspece.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isFirst) {
-                    valor1 = valor1.length()-1 + "";
-                } else {
-                    valor2 = valor2.length()-1 + "";
-                }
-            }
-        });
+
         is_equal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -375,16 +399,18 @@ public class MainActivity extends AppCompatActivity {
                 clear();
                 recivirOperacion(op);
                 Operar();
-                mostrar(valorRes);
-                //save();
+                mostrar(valor1 + " " + op + " " + valor2 + " = " + valorRes);
+                save();
+                onUpdate();
+                clean();
             }
         });
 
-        lista = findViewById(R.id.lista);
-        lista.setLayoutManager( new LinearLayoutManager(this));
+        listaH = findViewById(R.id.lista);
+        listaH.setLayoutManager( new LinearLayoutManager(this));
 
         List<Historial> info = SQLite.select().from(Historial.class).queryList();
-        lista.setAdapter(new ToDoAdapter(info));
+        listaH.setAdapter(new ToDoAdapter(info));
     }
 
     @Override
@@ -403,9 +429,11 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_update) {
+            onUpdate();
         }
         return super.onOptionsItemSelected(item);
     }
+
     //Todo Adaptador
     public static class ToDoAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
         private final List<Historial> listHistorial;
@@ -482,7 +510,7 @@ public class MainActivity extends AppCompatActivity {
                     new HtmlResImageGetter(holder.html));
 
 
-            holder.Deleate.setOnClickListener(new View.OnClickListener() {
+            holder.Delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     current.delete();

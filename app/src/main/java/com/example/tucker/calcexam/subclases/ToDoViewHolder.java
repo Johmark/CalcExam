@@ -14,11 +14,11 @@ import org.sufficientlysecure.htmltextview.HtmlTextView;
 
 public class ToDoViewHolder extends RecyclerView.ViewHolder{
     public HtmlTextView html;
-    public ImageView Deleate;
+    public ImageView Delete;
 
     public ToDoViewHolder(View itemView) {
         super(itemView);
         html = itemView.findViewById(R.id.html_text);
-        Deleate = itemView.findViewById(R.id.delete);
+        Delete = itemView.findViewById(R.id.delete);
     }
 }

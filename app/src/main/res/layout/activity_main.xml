@@ -39,7 +39,7 @@
         android:editable="false"
         android:textIsSelectable="false"
         android:textAlignment="viewEnd"
-        android:background="@color/light"
+        android:background="@color/white"
         />
     <GridLayout
         android:layout_width="match_parent"
@@ -55,15 +55,7 @@
             android:textSize="20dp"
             android:text="CE"
             />
-        <Button
-            android:id="@+id/btnBackspece"
-            android:layout_width="110dp"
-            android:layout_height="55dp"
-            android:background="@drawable/buttom_calc"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            android:text="C"
-            />
+
     </GridLayout>
 
     <GridLayout
