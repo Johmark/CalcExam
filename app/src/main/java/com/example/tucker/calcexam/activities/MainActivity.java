@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     {
         if (error.contentEquals("divError"))
         {
-            //Este metodo le indica al programa que hacer si se presenta un error de calculo
+            //Este metodo le indica al programa que hacer si se presenta un error de calculo de divicion
             Toast.makeText(getApplicationContext(), "Error de calculo, No es posible completar la operacion", Toast.LENGTH_LONG).show();
             valor2.isEmpty();
             recivirOperacion("div");
@@ -90,8 +90,13 @@ public class MainActivity extends AppCompatActivity {
         }
         else if(error.contentEquals("pointError"))
         {
-            //Este metodo le indica al programa que hacer si se presenta un error de calculo
+            //Este metodo le indica al programa que hacer si se presenta un error de calculo con punto
             Toast.makeText(getApplicationContext(), "Error de calculo, No es colocar mas de un punto", Toast.LENGTH_LONG).show();
+        }
+        else if (error.contentEquals("noValue"))
+        {
+            //Este metodo le indica al programa que hacer si se presenta un error de calculo sin valores
+            Toast.makeText(getApplicationContext(), "No existen datos", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -114,22 +119,9 @@ public class MainActivity extends AppCompatActivity {
         else if (op.contentEquals("*")){numRes = num1 * num2;}
         else if (op.contentEquals("/")){if(num2 != 0){numRes = num1/num2;}else {MathError("divError");}}
         else if (op.contentEquals("^")){numRes = Math.pow(num1,num2);}
-        else numRes = num1;
+        else if (op.contentEquals("")) {if(valor2 == ""){numRes = num1;}}
 
         valorRes = Double.toString(numRes);
-    }
-
-
-    //todo implementar Ans a opradores
-    public void Ans (String LastOp)
-    {
-        /*Metodo Ads evalua si ya se hiso una operacion y en caso de que
-        se alla efectuado dicha operacion envia el resultado al valor 1
-        limpia valor 2, y prepara para la sigiente operacion*/
-        if((valor2 != "" && isFirst == false) || numRes == Double.NaN)
-        {
-
-        }
     }
 
     //Todo save
@@ -345,15 +337,31 @@ public class MainActivity extends AppCompatActivity {
                     sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
                 }
                 if(noPoint) {
-                    en_pantalla = en_pantalla + ".";
-                    mostrar(en_pantalla);
-                    if (isFirst)
+                    if (valor1 != "")
                     {
-                        valor1 = valor1 + ".";
-                    } else {
-                        valor2 = valor2 + ".";
+                        en_pantalla = en_pantalla + ".";
+                        mostrar(en_pantalla);
+                        if (isFirst)
+                        {
+                            valor1 = valor1 + ".";
+                        } else {
+                            valor2 = valor2 + ".";
+                        }
+                        noPoint = false;
                     }
-                    noPoint = false;
+                    if (valor1 == "")
+                    {
+                        en_pantalla = en_pantalla + "0.";
+                        mostrar(en_pantalla);
+                        if (isFirst)
+                        {
+                            valor1 = valor1 + "0.";
+                        } else {
+                            valor2 = valor2 + "0.";
+                        }
+                        noPoint = false;
+                    }
+
                 } else {
                     MathError("pointError");
                 }
@@ -375,12 +383,15 @@ public class MainActivity extends AppCompatActivity {
                 if (sound_click_flick != 0){
                     sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
                 }
-                //Ans("sum");
-                recivirOperacion("sum");
-                isFirst = false;
-                noPoint = true;
-                en_pantalla = en_pantalla + " + ";
-                mostrar(en_pantalla);
+                if(valor1 == "") {
+                    MathError("noValue");
+                }else {
+                    recivirOperacion("sum");
+                    isFirst = false;
+                    noPoint = true;
+                    en_pantalla = en_pantalla + " + ";
+                    mostrar(en_pantalla);
+                }
 
             }
         });
@@ -390,12 +401,15 @@ public class MainActivity extends AppCompatActivity {
                 if (sound_click_flick != 0){
                     sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
                 }
-                //Ans("res");
-                recivirOperacion("res");
-                isFirst = false;
-                noPoint = true;
-                en_pantalla = en_pantalla + " - ";
-                mostrar(en_pantalla);
+                if(valor1 == "") {
+                    MathError("noValue");
+                }else {
+                    recivirOperacion("res");
+                    isFirst = false;
+                    noPoint = true;
+                    en_pantalla = en_pantalla + " - ";
+                    mostrar(en_pantalla);
+                }
             }
         });
         multiply.setOnClickListener(new View.OnClickListener() {
@@ -404,12 +418,15 @@ public class MainActivity extends AppCompatActivity {
                 if (sound_click_flick != 0){
                     sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
                 }
-                //Ans("mul");
-                recivirOperacion("mul");
-                isFirst = false;
-                noPoint = true;
-                en_pantalla = en_pantalla + " × ";
-                mostrar(en_pantalla);
+                if(valor1 == "") {
+                    MathError("noValue");
+                }else {
+                    recivirOperacion("mul");
+                    isFirst = false;
+                    noPoint = true;
+                    en_pantalla = en_pantalla + " × ";
+                    mostrar(en_pantalla);
+                }
             }
         });
         divide.setOnClickListener(new View.OnClickListener() {
@@ -418,12 +435,15 @@ public class MainActivity extends AppCompatActivity {
                 if (sound_click_flick != 0){
                     sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
                 }
-                //Ans("div");
-                recivirOperacion("div");
-                isFirst = false;
-                noPoint = true;
-                en_pantalla = en_pantalla + " ÷ ";
-                mostrar(en_pantalla);
+                if(valor1 == "") {
+                    MathError("noValue");
+                }else {
+                    recivirOperacion("div");
+                    isFirst = false;
+                    noPoint = true;
+                    en_pantalla = en_pantalla + " ÷ ";
+                    mostrar(en_pantalla);
+                }
             }
         });
         power_of.setOnClickListener(new View.OnClickListener() {
@@ -432,12 +452,15 @@ public class MainActivity extends AppCompatActivity {
                 if (sound_click_flick != 0){
                     sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
                 }
-                //Ans("pow");
-                recivirOperacion("pow");
-                isFirst = false;
-                noPoint = true;
-                en_pantalla = en_pantalla + " ^ ";
-                mostrar(en_pantalla);
+                if(valor1 == "") {
+                    MathError("noValue");
+                }else {
+                    recivirOperacion("pow");
+                    isFirst = false;
+                    noPoint = true;
+                    en_pantalla = en_pantalla + " ^ ";
+                    mostrar(en_pantalla);
+                }
             }
         });
         deleate.setOnClickListener(new View.OnClickListener() {
@@ -458,16 +481,32 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                if (sound_click_flick != 0){
-                    sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
+                if (sound_click_flick != 0) {
+                    sp.play(sound_click_flick, 1, 1, 0, 0, 1);
                 }
-                clear();
-                recivirOperacion(op);
-                Operar();
-                mostrar(valor1 + " " + op + " " + valor2 + " = " + valorRes);
-                save();
-                onUpdate();
-                clean();
+                if(valor1 != "")
+                {
+                    if (valor2 == "")
+                    {
+                        valorRes = valor1;
+                        mostrar( valorRes);
+                        save();
+                        onUpdate();
+                        clean();
+                    }
+                    if (valor2 != "")
+                    {
+                        clear();
+                        recivirOperacion(op);
+                        Operar();
+                        mostrar(valor1 + " " + op + " " + valor2 + " = " + valorRes);
+                        save();
+                        onUpdate();
+                        clean();
+                    }
+                }else{
+                    MathError("noValue");
+                }
             }
         });
 
