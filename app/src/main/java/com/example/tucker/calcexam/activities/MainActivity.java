@@ -124,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
         valorRes = Double.toString(numRes);
     }
 
-    //Todo save
     private void save()
     {
         Historial resgistro = new Historial();
