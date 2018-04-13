@@ -1,6 +1,8 @@
 package com.example.tucker.calcexam.activities;
 
 import android.content.Context;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     public double num1, num2, numRes;
     private RecyclerView listaH;
     private static Context QuickContext;
+    SoundPool sp;
+    int sound_click_flick = 0;
 
 
     //todo Funciones que le permiten a la aplicacion calcular.
@@ -150,6 +154,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        sp = new SoundPool(8, AudioManager.STREAM_MUSIC, 0);
+        sound_click_flick = sp.load(this, R.raw.sound_click_flick, 1);
+
         //Declaracion del teclado numerico
         Button cero = findViewById(R.id.btn0);
         Button doblecero = findViewById(R.id.btn00);
@@ -168,6 +175,9 @@ public class MainActivity extends AppCompatActivity {
         cero.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (sound_click_flick != 0){
+                    sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
+                }
                 en_pantalla = en_pantalla + "0";
                 mostrar(en_pantalla);
                 if (isFirst) {
@@ -175,11 +185,15 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     valor2 = valor2 + "0";
                 }
+
             }
         });
         doblecero.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (sound_click_flick != 0){
+                    sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
+                }
                 en_pantalla = en_pantalla + "00";
                 mostrar(en_pantalla);
                 if (isFirst) {
@@ -192,6 +206,9 @@ public class MainActivity extends AppCompatActivity {
         uno.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (sound_click_flick != 0){
+                    sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
+                }
                 en_pantalla = en_pantalla + "1";
                 mostrar(en_pantalla);
                 if (isFirst) {
@@ -204,6 +221,9 @@ public class MainActivity extends AppCompatActivity {
         dos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (sound_click_flick != 0){
+                    sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
+                }
                 en_pantalla = en_pantalla + "2";
                 mostrar(en_pantalla);
                 if (isFirst) {
@@ -216,6 +236,9 @@ public class MainActivity extends AppCompatActivity {
         tres.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (sound_click_flick != 0){
+                    sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
+                }
                 en_pantalla = en_pantalla + "3";
                 mostrar(en_pantalla);
                 if (isFirst) {
@@ -228,6 +251,9 @@ public class MainActivity extends AppCompatActivity {
         cuatro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (sound_click_flick != 0){
+                    sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
+                }
                 en_pantalla = en_pantalla + "4";
                 mostrar(en_pantalla);
                 if (isFirst) {
@@ -240,6 +266,9 @@ public class MainActivity extends AppCompatActivity {
         cinco.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (sound_click_flick != 0){
+                    sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
+                }
                 en_pantalla = en_pantalla + "5";
                 mostrar(en_pantalla);
                 if (isFirst) {
@@ -252,6 +281,9 @@ public class MainActivity extends AppCompatActivity {
         seis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (sound_click_flick != 0){
+                    sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
+                }
                 en_pantalla = en_pantalla + "6";
                 mostrar(en_pantalla);
                 if (isFirst) {
@@ -264,6 +296,9 @@ public class MainActivity extends AppCompatActivity {
         siete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (sound_click_flick != 0){
+                    sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
+                }
                 en_pantalla = en_pantalla + "7";
                 mostrar(en_pantalla);
                 if (isFirst) {
@@ -276,6 +311,9 @@ public class MainActivity extends AppCompatActivity {
         ocho.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (sound_click_flick != 0){
+                    sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
+                }
                 en_pantalla = en_pantalla + "8";
                 mostrar(en_pantalla);
                 if (isFirst) {
@@ -288,6 +326,9 @@ public class MainActivity extends AppCompatActivity {
         nueve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (sound_click_flick != 0){
+                    sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
+                }
                 en_pantalla = en_pantalla + "9";
                 mostrar(en_pantalla);
                 if (isFirst) {
@@ -300,6 +341,9 @@ public class MainActivity extends AppCompatActivity {
         point.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (sound_click_flick != 0){
+                    sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
+                }
                 if(noPoint) {
                     en_pantalla = en_pantalla + ".";
                     mostrar(en_pantalla);
@@ -328,6 +372,9 @@ public class MainActivity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (sound_click_flick != 0){
+                    sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
+                }
                 //Ans("sum");
                 recivirOperacion("sum");
                 isFirst = false;
@@ -340,6 +387,9 @@ public class MainActivity extends AppCompatActivity {
         substact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (sound_click_flick != 0){
+                    sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
+                }
                 //Ans("res");
                 recivirOperacion("res");
                 isFirst = false;
@@ -351,6 +401,9 @@ public class MainActivity extends AppCompatActivity {
         multiply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (sound_click_flick != 0){
+                    sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
+                }
                 //Ans("mul");
                 recivirOperacion("mul");
                 isFirst = false;
@@ -362,6 +415,9 @@ public class MainActivity extends AppCompatActivity {
         divide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (sound_click_flick != 0){
+                    sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
+                }
                 //Ans("div");
                 recivirOperacion("div");
                 isFirst = false;
@@ -373,6 +429,9 @@ public class MainActivity extends AppCompatActivity {
         power_of.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (sound_click_flick != 0){
+                    sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
+                }
                 //Ans("pow");
                 recivirOperacion("pow");
                 isFirst = false;
@@ -384,6 +443,9 @@ public class MainActivity extends AppCompatActivity {
         deleate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (sound_click_flick != 0){
+                    sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
+                }
                 clear();
                 clean();
                 num1 = Double.NaN;
@@ -396,6 +458,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
+                if (sound_click_flick != 0){
+                    sp.play(sound_click_flick, 1, 1 , 0, 0, 1);
+                }
                 clear();
                 recivirOperacion(op);
                 Operar();
